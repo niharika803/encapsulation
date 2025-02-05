@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 1. Fetch Data from Server (Simulated)
+const fetchData = new Promise((resolve, reject) => {
+  console.log("Fetching data...");
+
+  setTimeout(() => {
+    const data = { name: "Alice", age: 25 };
+    resolve(data); // Successfully fetched data
+  }, 2000);
+});
+
+// 2. File Upload Simulation with Progress Update
+const uploadFile = new Promise((resolve, reject) => {
+  console.log("Starting file upload...");
+
+  let progress = 0;
+  const uploadInterval = setInterval(() => {
+    progress += 20;
+    console.log(`Upload Progress: ${progress}%`);
+
+    if (progress === 100) {
+      clearInterval(uploadInterval);
+      resolve("File upload completed successfully!");
+    }
+  }, 500);
+
+  // Simulate an error condition after 3 seconds if not completed
+  setTimeout(() => {
+    if (progress < 100) {
+      clearInterval(uploadInterval);
+      reject("File upload failed due to network issue.");
+    }
+  }, 3000);
+});
+
+// 3. User Authentication
+const authenticateUser = (username, password) => {
+  return new Promise((resolve, reject) => {
+    console.log("Authenticating user...");
+
+    setTimeout(() => {
+      const validUsername = "user123";
+      const validPassword = "password";
+
+      if (username === validUsername && password === validPassword) {
+        resolve("User authenticated successfully!");
+      } else {
+        reject("Authentication failed: Invalid username or password.");
+      }
+    }, 1000);
+  });
+};
+
+// Run each promise and handle the result
+fetchData
+  .then(data => console.log("Data fetched:", data))
+  .catch(error => console.error("Error fetching data:", error));
+
+uploadFile
+  .then(message => console.log(message))
+  .catch(error => console.error("Error:", error));
+
+authenticateUser("user123", "password")
+  .then(message => console.log(message))
+  .catch(error => console.error(error));
+
+    </script>
+</body>
+</html>
